@@ -1,0 +1,2 @@
+load("/Users/apple/Documents/Predict-Box-Office/data/actor.rds")
+view()
