@@ -1,0 +1,25 @@
+#1(i)
+library(MASS)
+attach(birthwt)
+fit<-lm(bwt~age+lwt+race+smoke+ptl+ht+ui+ftv)
+summary(fit)
+library(car)
+vif<-vif(fit)
+vif_bar<-sum(vif)/length(vif)
+kappa(fit)
+#(ii)
+ridge<-lm.ridge(bwt~age+lwt+race+smoke+ptl+ht+ui+ftv,lambda = seq(0,1000,0.001))
+select(ridge)
+plot(ridge)
+coef(ridge)[which.min(ridge$GCV),]
+coef(fit)
+ridge$lambda[which.min(ridge$GCV)]
+plot(ridge$lambda, ridge$GCV)
+#2
+library(glmnet)
+x<-as.matrix(birthwt[,2:9])
+y<-as.matrix(birthwt[,10])
+cv_fit<-cv.glmnet(x,y)
+coef(cv_fit)
+step <- stepAIC(fit, direction="both")
+step$anova
